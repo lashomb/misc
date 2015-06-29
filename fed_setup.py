@@ -14,16 +14,24 @@ pip_path = "/usr/local/bin/pip"
 gem_path = "/usr/bin/gem"
 node_url = "http://nodejs.org/dist/v0.12.4/node-v0.12.4.pkg"
 wkhtmltopdf_url = "http://iweb.dl.sourceforge.net/project/wkhtmltopdf/0.12.2.1/wkhtmltox-0.12.2.1_osx-cocoa-x86-64.pkg"
+requests_loaded = None
 
+# Checks if pip is installed.
 if not os.path.exists(pip_path):
     call(["/usr/bin/easy_install", "pip"])
     installed['pip: ']='installed'
 else:
     installed['pip: ']='failed'
 
+# Check if requests is installed.
+try:
+    import requests
+    requests_loaded = True
+except ImportError:
+    requests_loaded = False
 
 # Installs the python module Requests.
-if os.path.exists(pip_path):
+if requests_loaded == False:
     call([pip_path, "install", "requests"])
     installed['requests: ']='installed'
 else:
